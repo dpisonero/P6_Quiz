@@ -17,14 +17,32 @@ exports.load = (req, res, next, tipId) => {
     .catch(error => next(error));
 };
 
+exports.new = (req, res, next) => {
+
+    const tip = {
+        text: ""
+    };
+
+    const {quiz} = req;
+
+    res.render('tips/new', {
+        tip,
+        quiz
+    });
+};
+
+
 
 // POST /quizzes/:quizId/tips
 exports.create = (req, res, next) => {
- 
+
+    const authorId = req.session.user && req.session.user.id || 0;
+
     const tip = models.tip.build(
         {
             text: req.body.text,
-            quizId: req.quiz.id
+            quizId: req.quiz.id,
+            authorId: authorId
         });
 
     tip.save()
@@ -42,7 +60,6 @@ exports.create = (req, res, next) => {
         next(error);
     });
 };
-
 
 // GET /quizzes/:quizId/tips/:tipId/accept
 exports.accept = (req, res, next) => {
