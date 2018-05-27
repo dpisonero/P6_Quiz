@@ -6,6 +6,7 @@
         <% var accepted = tip.accepted; %>
         <% var isAdmin = session.user && session.user.isAdmin; %>
         <% var isQuizAuthor = session.user && quizAuthorId && quizAuthorId === session.user.id; %>
+        <% var isTipAuthor = session.user && tip.authorId === session.user.id %>
 
         <% if (accepted || isAdmin || isQuizAuthor) { %>
 
@@ -19,6 +20,10 @@
                         <button>Accept</button>
                     </a>
 
+                <% } %>
+
+                <% if (isAdmin || isTipAuthor) { %>
+                    <a href="/quizzes/<%= quiz.id %>/tips/<%= tip.id %>/edit"><buttton>Edit</button></a>
                 <% } %>
 
                 <% if (isAdmin || isQuizAuthor) { %>
